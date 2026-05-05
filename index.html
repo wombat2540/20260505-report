@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바이브의 시대 — 분석 레포트</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --ivory: #F6F3EE;
+  --ivory-2: #EDE9E1;
+  --ivory-3: #E3DDD3;
+  --c1: #111111;
+  --c2: #505050;
+  --c3: #767676;
+  --border: #D8D2C6;
+  --sidebar-w: 240px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ivory);
+  color: var(--c1);
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--ivory);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 48px 32px;
+  z-index: 100;
+}
+
+.sidebar-brand { margin-bottom: 48px; }
+.sidebar-brand .brand-title { font-size: 15px; font-weight: 700; color: var(--c1); line-height: 1.5; margin-bottom: 8px; }
+.sidebar-brand .brand-sub { font-size: 14px; color: var(--c3); }
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px; font-size: 14px; color: var(--c3);
+  text-decoration: none; border-radius: 4px; transition: all 0.2s; font-weight: 400;
+}
+.sidebar-nav a .nav-num { font-size: 14px; color: var(--border); width: 20px; flex-shrink: 0; }
+.sidebar-nav a:hover { color: var(--c1); background: var(--ivory-2); }
+.sidebar-nav a.active { color: var(--c1); font-weight: 700; background: var(--ivory-2); }
+.sidebar-nav a.active .nav-num { color: var(--c2); }
+
+.sidebar-footer { font-size: 14px; color: var(--c3); line-height: 1.6; padding-top: 24px; border-top: 1px solid var(--border); }
+
+.main { margin-left: var(--sidebar-w); width: calc(100% - var(--sidebar-w)); max-width: calc(var(--sidebar-w) + 1200px); padding: 0 80px; }
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: flex-end; padding-bottom: 72px; border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c3); margin-bottom: 24px; }
+.hero h1 { font-size: clamp(52px, 6vw, 88px); font-weight: 700; line-height: 1.1; color: var(--c1); letter-spacing: -0.02em; margin-bottom: 48px; }
+.hero h1 span { display: block; color: var(--c3); font-weight: 400; font-size: 0.5em; margin-top: 16px; letter-spacing: 0; }
+.hero-meta { display: flex; flex-direction: column; gap: 10px; padding-top: 32px; border-top: 1px solid var(--border); }
+.hero-meta-row { display: flex; gap: 8px; font-size: 16px; }
+.hero-meta-row .meta-label { color: var(--c3); width: 72px; flex-shrink: 0; }
+.hero-meta-row .meta-value { color: var(--c1); }
+
+section { padding: 96px 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+
+.section-num { font-size: 72px; font-weight: 700; color: var(--ivory-3); line-height: 1; margin-bottom: 8px; }
+.section-eyebrow { font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c3); margin-bottom: 12px; }
+
+h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line-height: 1.3; margin-bottom: 48px; letter-spacing: -0.01em; }
+
+.prose { font-size: 16px; color: var(--c2); line-height: 1.9; }
+.prose + .prose { margin-top: 20px; }
+.prose strong { color: var(--c1); font-weight: 700; }
+
+.insight-list { display: flex; flex-direction: column; border: 1px solid var(--border); margin-top: 32px; }
+.insight-item { padding: 36px 40px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 48px 1fr; gap: 24px; align-items: start; transition: background 0.2s; }
+.insight-item:last-child { border-bottom: none; }
+.insight-item:hover { background: var(--ivory-2); }
+.insight-idx { font-size: 32px; font-weight: 700; color: var(--ivory-3); line-height: 1; padding-top: 4px; }
+.insight-body h3 { font-size: 18px; font-weight: 700; color: var(--c1); margin-bottom: 10px; }
+.insight-body p { font-size: 16px; color: var(--c2); line-height: 1.8; }
+
+.slogan-block { border: 1px solid var(--border); padding: 48px; margin: 40px 0; }
+.slogan-label { font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c3); margin-bottom: 16px; }
+.slogan-text { font-size: clamp(20px, 2.5vw, 28px); font-weight: 700; color: var(--c1); line-height: 1.5; }
+
+.def-block { margin: 32px 0; }
+.def-label { font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c3); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.def-content { padding: 24px 0; font-size: 16px; color: var(--c2); line-height: 1.9; }
+.def-content strong { color: var(--c1); font-weight: 700; }
+.def-content p + p { margin-top: 16px; }
+
+.arrow-flow { display: flex; flex-direction: column; border: 1px solid var(--border); margin-top: 16px; }
+.arrow-step { padding: 20px 28px; border-bottom: 1px solid var(--border); font-size: 16px; color: var(--c2); display: flex; align-items: center; gap: 16px; }
+.arrow-step:last-child { border-bottom: none; }
+.arrow-step .step-num { font-size: 14px; color: var(--border); width: 20px; flex-shrink: 0; }
+.arrow-step strong { color: var(--c1); font-weight: 700; }
+
+.problem-list { display: flex; flex-direction: column; border: 1px solid var(--border); margin-top: 32px; }
+.problem-item { padding: 32px 36px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 32px 1fr; gap: 20px; transition: background 0.2s; }
+.problem-item:last-child { border-bottom: none; }
+.problem-item:hover { background: var(--ivory-2); }
+.problem-idx { font-size: 22px; font-weight: 700; color: var(--ivory-3); line-height: 1; padding-top: 3px; }
+.problem-body h3 { font-size: 17px; font-weight: 700; color: var(--c1); margin-bottom: 8px; }
+.problem-body p { font-size: 16px; color: var(--c2); line-height: 1.8; }
+
+.diff-list { display: flex; flex-direction: column; border: 1px solid var(--border); margin-top: 32px; }
+.diff-item { padding: 28px 36px; border-bottom: 1px solid var(--border); transition: background 0.2s; }
+.diff-item:last-child { border-bottom: none; }
+.diff-item:hover { background: var(--ivory-2); }
+.diff-item h3 { font-size: 17px; font-weight: 700; color: var(--c1); margin-bottom: 8px; }
+.diff-item p { font-size: 16px; color: var(--c2); line-height: 1.8; }
+
+/* PERSONA */
+.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+.persona-card { border: 1px solid var(--border); padding: 36px; transition: background 0.2s; }
+.persona-card:hover { background: var(--ivory-2); }
+.persona-type { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c3); margin-bottom: 16px; }
+.persona-name { font-size: 22px; font-weight: 700; color: var(--c1); margin-bottom: 6px; }
+.persona-meta { font-size: 15px; color: var(--c3); margin-bottom: 24px; }
+.persona-section-label { font-size: 14px; font-weight: 700; color: var(--c1); margin-bottom: 8px; margin-top: 20px; }
+.persona-card p { font-size: 15px; color: var(--c2); line-height: 1.8; }
+
+.target-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.tag { padding: 6px 16px; border: 1px solid var(--border); font-size: 14px; color: var(--c2); }
+.tag.active { border-color: var(--c1); color: var(--c1); font-weight: 700; }
+
+.mvp-list { display: flex; flex-direction: column; border: 1px solid var(--border); margin-top: 16px; }
+.mvp-item { padding: 32px 36px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 64px 1fr; gap: 20px; align-items: start; }
+.mvp-item:last-child { border-bottom: none; }
+.mvp-num { font-size: 18px; font-weight: 700; color: var(--ivory-3); line-height: 1; padding-top: 3px; }
+.mvp-num.highlight { color: var(--c1); font-size: 15px; letter-spacing: 0.05em; }
+.mvp-body h3 { font-size: 17px; font-weight: 700; color: var(--c1); margin-bottom: 8px; }
+.mvp-body p { font-size: 16px; color: var(--c2); line-height: 1.8; }
+
+.retro-quote { font-size: clamp(17px, 2vw, 22px); font-weight: 700; color: var(--c1); line-height: 1.7; border-left: 2px solid var(--c1); padding-left: 28px; margin-bottom: 40px; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; width: 100%; padding: 0 24px; }
+  .persona-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-title">바이브의 시대<br>분석 레포트</div>
+    <div class="brand-sub">2026.05.05</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#hero" class="active"><span class="nav-num">—</span>표지</a>
+    <a href="#insight"><span class="nav-num">01</span>핵심 인사이트</a>
+    <a href="#opportunity"><span class="nav-num">02</span>시장 기회</a>
+    <a href="#idea"><span class="nav-num">03</span>아이디어</a>
+    <a href="#competition"><span class="nav-num">04</span>경쟁 분석</a>
+    <a href="#diff"><span class="nav-num">05</span>차별화 포인트</a>
+    <a href="#persona"><span class="nav-num">06</span>페르소나</a>
+    <a href="#target"><span class="nav-num">07</span>타겟 & 로드맵</a>
+    <a href="#retro"><span class="nav-num">08</span>회고</a>
+  </nav>
+  <div class="sidebar-footer">정제용 연구원<br>롱블랙 기반 분석</div>
+</aside>
+
+<div class="main">
+
+  <section class="hero" id="hero">
+    <div class="hero-eyebrow">Report · 2026</div>
+    <h1>바이브의<br>시대<span>— 분석 레포트</span></h1>
+    <div class="hero-meta">
+      <div class="hero-meta-row"><span class="meta-label">작성일</span><span class="meta-value">2026년 5월 5일</span></div>
+      <div class="hero-meta-row"><span class="meta-label">작성자</span><span class="meta-value">정제용 연구원</span></div>
+      <div class="hero-meta-row"><span class="meta-label">아이디어</span><span class="meta-value">정부 혜택 맞춤 추천 서비스</span></div>
+    </div>
+  </section>
+
+  <section id="insight">
+    <div class="section-num reveal">01</div>
+    <div class="section-eyebrow reveal">Core Insights</div>
+    <h2 class="reveal">핵심 인사이트</h2>
+    <p class="prose reveal">롱블랙 '바이브의 시대' 기사를 읽으며 인상 깊었던 인사이트를 세 가지로 압축했습니다.</p>
+    <div class="insight-list reveal">
+      <div class="insight-item">
+        <div class="insight-idx">1</div>
+        <div class="insight-body">
+          <h3>AI가 '어떻게'를 가져갔습니다</h3>
+          <p>실행은 AI가 합니다. 인간에게 남은 것은 '무엇을 왜'라는 질문입니다. 도구를 쓰는 능력보다 의도를 선명하게 표현하는 능력이 희소 자원이 됩니다.</p>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-idx">2</div>
+        <div class="insight-body">
+          <h3>맥락이 자산입니다</h3>
+          <p>이미커피 이림 대표는 47일치 카카오톡 대화를 AI에 넘겨 대시보드를 만들고 이듬해 그 맥락을 그대로 재활용했습니다. 경험과 판단을 축적하고 재사용하는 사람이 유리해집니다.</p>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-idx">3</div>
+        <div class="insight-body">
+          <h3>반복 업무 제거 → 생각의 밀도 상승</h3>
+          <p>뉴믹스커피는 오탈자 검수를 자동화한 뒤 팀 회의 주제 자체가 바뀌었습니다. 자동화의 진짜 가치는 시간 절약이 아니라 더 중요한 질문을 할 여유를 만드는 것입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="opportunity">
+    <div class="section-num reveal">02</div>
+    <div class="section-eyebrow reveal">Market Opportunity</div>
+    <h2 class="reveal">인사이트에서 발견한 시장 기회</h2>
+    <p class="prose reveal">세 번째 인사이트에서 비즈니스 아이디어를 생각해봤습니다. <strong>귀찮고 반복적인 것을 없애줄 때 진짜 가치가 생긴다</strong>고 느꼈습니다.</p>
+    <p class="prose reveal">예로 일상에서 집에 쓰레기를 분리수거 없이 봉투에만 담으면 알아서 수거해서 처리해주고 비용을 청구해주는 서비스들이 앱스토어 라이프스타일 부문 100위 내에 3가지가 있습니다. 분리수거처럼 복잡하고 귀찮은 것들 중 디지털로 해결 가능한 게 무엇이 있을까 고민했습니다.</p>
+    <p class="prose reveal">그러다가 쓰레드나 인스타그램에 정부 정책을 정리해주는 계정이 넘쳐나고 댓글도 많이 달리는 것을 발견했습니다. 이를 앱 서비스로 <strong>제대로 해결해주는 것이 없을까</strong>에서 시작했습니다.</p>
+  </section>
+
+  <section id="idea">
+    <div class="section-num reveal">03</div>
+    <div class="section-eyebrow reveal">Business Idea</div>
+    <h2 class="reveal">아이디어 — 정부 혜택 맞춤 추천 서비스</h2>
+    <div class="slogan-block reveal">
+      <div class="slogan-label">Slogan</div>
+      <div class="slogan-text">"흩어진 정부 혜택을 한 곳에서.<br>내 상황에 맞게."</div>
+    </div>
+    <div class="def-block reveal">
+      <div class="def-label">문제 정의</div>
+      <div class="def-content">정부 혜택은 청년과 중장년 할 것 없이 생각보다 많습니다. 혜택을 적극적으로 찾아서 받는 사람도 있지만 어디서 찾아야 하는지 모르거나 신청 과정이 복잡해서 놓치는 사람도 많습니다. 알고 싶어도 혜택이 여러 플랫폼에 흩어져 있어 <strong>내 상황에 맞는 혜택을 한눈에 파악하기 어렵다</strong>는 것이 핵심 문제입니다.</div>
+    </div>
+    <div class="def-block reveal">
+      <div class="def-label">솔루션</div>
+      <div class="arrow-flow">
+        <div class="arrow-step"><span class="step-num">1</span>나이·지역·취업 상태·소득 등 <strong>내 상황을 입력</strong>합니다</div>
+        <div class="arrow-step"><span class="step-num">2</span>지금 당장 받을 수 있는 <strong>맞춤 혜택 목록</strong>을 보여줍니다</div>
+        <div class="arrow-step"><span class="step-num">3</span>각 혜택의 <strong>신청 링크까지 연결</strong>해줍니다</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="competition">
+    <div class="section-num reveal">04</div>
+    <div class="section-eyebrow reveal">Competitive Analysis</div>
+    <h2 class="reveal">경쟁 분석 — 삼쩜삼을 직접 사용해봤습니다</h2>
+    <p class="prose reveal">삼쩜삼이 '정부 혜택 알리미'를 이미 출시했다는 것을 확인하고 직접 사용해봤습니다. 시장성이 검증됐다는 증거이기도 하지만 동시에 명확한 UX 문제점도 발견했습니다.</p>
+    <div class="problem-list reveal">
+      <div class="problem-item">
+        <div class="problem-idx">1</div>
+        <div class="problem-body">
+          <h3>찾고 싶은 혜택을 검색할 수 없습니다</h3>
+          <p>전체 혜택이 1만 개 가까이 나열되어 있지만 검색 기능이 없습니다. 청년도약계좌 같은 특정 혜택을 찾고 싶어도 직접 스크롤하며 찾아야 합니다. 실제로 사용해봤을 때 원하는 혜택을 찾는 것 자체가 불가능에 가까웠습니다.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-idx">2</div>
+        <div class="problem-body">
+          <h3>왜 내 맞춤 목록에 없는지 알 수 없습니다</h3>
+          <p>특정 혜택을 직접 들어가면 신청 대상자 조건은 나옵니다. 하지만 내 정보를 이미 입력했음에도 왜 이 혜택이 내 맞춤 목록에 없는지 설명이 없습니다. "소득 조건이 맞지 않습니다" 혹은 "이 조건을 충족하면 받을 수 있습니다" 같은 안내가 없어 아쉬웠습니다.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-idx">3</div>
+        <div class="problem-body">
+          <h3>예정·종료 혜택 정보가 없습니다</h3>
+          <p>6월 오픈 예정인 청년미래적금 같은 혜택은 아직 신청 전이라 목록에 없습니다. 공식 발표된 예정 혜택이라도 소식통 형태로 미리 확인할 수 있으면 좋겠지만 그런 기능이 없습니다. 신청이 종료된 혜택도 기록 없이 사라져 아쉬웠습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="diff">
+    <div class="section-num reveal">05</div>
+    <div class="section-eyebrow reveal">Differentiation</div>
+    <h2 class="reveal">차별화 포인트</h2>
+    <p class="prose reveal">삼쩜삼의 UX 문제점에서 도출한 차별화 포인트 3가지입니다.</p>
+    <div class="diff-list reveal">
+      <div class="diff-item">
+        <h3>1. 혜택 직접 검색</h3>
+        <p>찾고 싶은 혜택 이름을 직접 검색할 수 있어야 합니다. 1만 개의 혜택을 스크롤로 찾는 것이 아니라 원하는 혜택에 바로 접근할 수 있는 UX를 제공합니다.</p>
+      </div>
+      <div class="diff-item">
+        <h3>2. 왜 안 되는지 + 어떻게 하면 되는지</h3>
+        <p>내 맞춤 목록에 없는 혜택에 대해 "현재 소득 조건이 맞지 않습니다" "이 조건을 충족하면 신청 가능합니다"처럼 명확한 이유와 조건 충족 가이드를 제공합니다. 정보가 아니라 가이드입니다.</p>
+      </div>
+      <div class="diff-item">
+        <h3>3. 예정·종료 혜택 소식통</h3>
+        <p>곧 오픈할 혜택을 미리 확인하고 알림을 받을 수 있습니다. 종료된 혜택도 아카이브로 남겨 맥락을 보존합니다. 게임의 종료 이벤트 아카이브처럼.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="persona">
+    <div class="section-num reveal">06</div>
+    <div class="section-eyebrow reveal">Persona</div>
+    <h2 class="reveal">페르소나</h2>
+    <div class="persona-grid reveal">
+      <div class="persona-card">
+        <div class="persona-type">Persona A · 정보 탐색형</div>
+        <div class="persona-name">정지수 (26세)</div>
+        <div class="persona-meta">사회초년생 · 마케터</div>
+        <div class="persona-section-label">상황</div>
+        <p>인스타그램에서 정부 혜택 정보를 능동적으로 찾아보는 편입니다. 해당 여부를 직접 확인하고 메모하거나 기억해뒀다가 신청하는 스타일입니다.</p>
+        <div class="persona-section-label">페인포인트</div>
+        <p>정보가 여러 계정에 흩어져 있어 메모하거나 기억해둬야 하고 내가 해당되는지 조건을 일일이 찾아봐야 하는 귀찮음이 있습니다. 신청 시기를 놓칠까봐 계속 확인해야 하는 것도 불편합니다.</p>
+      </div>
+      <div class="persona-card">
+        <div class="persona-type">Persona B · 정보 의존형</div>
+        <div class="persona-name">김현수 (27세)</div>
+        <div class="persona-meta">사회초년생 · 직장인</div>
+        <div class="persona-section-label">상황</div>
+        <p>혜택이 있다는 건 주변 지인을 통해 많이 듣고 물어보는 스타일입니다. "청년월세지원 언제야? 자격 요건이 뭐야? 나 안 돼?" 같은 질문을 반복합니다.</p>
+        <div class="persona-section-label">페인포인트</div>
+        <p>직접 찾아보기도 하지만 중간중간 놓친 설명글이 있어서 "아 이런 조건이 있었구나 나랑 안 맞는 거였네" 하는 상황이 반복됩니다. 조건을 충족하려면 어떻게 해야 하는지도 잘 모릅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="target">
+    <div class="section-num reveal">07</div>
+    <div class="section-eyebrow reveal">Target & Roadmap</div>
+    <h2 class="reveal">타겟 & MVP 로드맵</h2>
+
+    <div class="def-block reveal">
+      <div class="def-label">STP</div>
+      <div class="def-content">
+        <div class="target-tags">
+          <span class="tag active">MVP · 청년 20~34세</span>
+          <span class="tag">2단계 · 중장년 40~50대</span>
+          <span class="tag">장기 · 전 국민</span>
+        </div>
+        <p><strong>Segmentation</strong> — 연령과 디지털 친숙도를 기준으로 청년·중장년·전 국민으로 세분화합니다.</p>
+        <p><strong>Targeting</strong> — MVP는 청년 20~34세를 타겟합니다. 혜택 규모가 수백~수천만원 단위로 크고 디지털 서비스에 익숙한 층이기 때문입니다.</p>
+        <p><strong>Positioning</strong> — 경쟁 서비스보다 한 발 더 나아가 맞춤 가이드 서비스로 포지셔닝합니다. 단순 정보 나열이 아니라 "왜 안 되는지 + 어떻게 하면 되는지"까지 안내합니다.</p>
+      </div>
+    </div>
+
+    <div class="def-block reveal">
+      <div class="def-label">MVP & 로드맵</div>
+      <div class="mvp-list">
+        <div class="mvp-item">
+          <div class="mvp-num highlight">MVP</div>
+          <div class="mvp-body">
+            <h3>기존(상황 입력 → 맞춤 혜택 목록 → 신청 링크) + 검색 + 가이드 + 소식통</h3>
+            <p>경쟁사가 제공하는 기본 흐름에 우리의 차별화 포인트 3가지를 모두 담아 첫 출시합니다. 이 단계는 무료로 운영합니다.</p>
+          </div>
+        </div>
+        <div class="mvp-item">
+          <div class="mvp-num">2</div>
+          <div class="mvp-body">
+            <h3>신청 대행 서비스</h3>
+            <p>혜택 정보 안내를 넘어 실제 신청까지 도와주는 대행 서비스로 확장합니다. 삼쩜삼처럼 혜택을 찾아줬을 때 일부를 수수료로 받는 방식으로 BM이 본격화됩니다. 기술적 구현 방식은 추가 검토가 필요합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="retro">
+    <div class="section-num reveal">08</div>
+    <div class="section-eyebrow reveal">Retrospect</div>
+    <h2 class="reveal">회고</h2>
+    <blockquote class="retro-quote reveal">"비즈니스 아이디어의 시작점은 거창한 기술이 아니라<br>주변에 관심을 갖고 불편함을 발견해내는 관찰에 있다."</blockquote>
+    <p class="prose reveal">이 레포트를 작성하면서 단순히 기사를 읽고 정리하는 것을 넘어 인사이트를 기반으로 아이디어를 탐색하고 경쟁 서비스를 직접 사용해보며 문제점을 발굴하는 과정을 거쳤습니다.</p>
+    <p class="prose reveal">그 과정에서 하나의 확신을 얻었습니다. 비즈니스 아이디어의 시작점은 거창한 기술이나 트렌드가 아니라 주변에 관심을 갖고 불편함을 발견해내는 관찰에 있다는 것입니다. 그리고 사용자가 진짜로 필요한 것을 해결해준다면 사람들은 얼마든지 지불한다는 것입니다.</p>
+    <p class="prose reveal">바이브의 시대가 전하는 메시지는 기술론이 아니라 인간론입니다. AI가 넘쳐나는 지금 중요한 것은 '무엇을 왜 끝까지'를 선명하게 정의하는 능력입니다. 정부 혜택 맞춤 추천 서비스처럼 앞으로도 일상의 귀찮음과 복잡함에서 시장 기회를 발견하고 빠르게 검증해나가는 과정을 계속 이어가겠습니다.</p>
+  </section>
+
+</div>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => io.observe(el));
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+const sio = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => sio.observe(s));
+</script>
+</body>
+</html>
