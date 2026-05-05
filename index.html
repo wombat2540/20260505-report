@@ -11,6 +11,7 @@
   --ivory: #F6F3EE;
   --ivory-2: #EDE9E1;
   --ivory-3: #E3DDD3;
+  --sidebar-bg: #EEEAE3;
   --c1: #111111;
   --c2: #505050;
   --c3: #767676;
@@ -35,7 +36,7 @@ body {
   position: fixed;
   top: 0; left: 0; bottom: 0;
   width: var(--sidebar-w);
-  background: var(--ivory);
+  background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -54,8 +55,8 @@ body {
   text-decoration: none; border-radius: 4px; transition: all 0.2s; font-weight: 400;
 }
 .sidebar-nav a .nav-num { font-size: 14px; color: var(--border); width: 20px; flex-shrink: 0; }
-.sidebar-nav a:hover { color: var(--c1); background: var(--ivory-2); }
-.sidebar-nav a.active { color: var(--c1); font-weight: 700; background: var(--ivory-2); }
+.sidebar-nav a:hover { color: var(--c1); background: var(--ivory-3); }
+.sidebar-nav a.active { color: var(--c1); font-weight: 700; background: var(--ivory-3); }
 .sidebar-nav a.active .nav-num { color: var(--c2); }
 
 .sidebar-footer { font-size: 14px; color: var(--c3); line-height: 1.6; padding-top: 24px; border-top: 1px solid var(--border); }
@@ -125,16 +126,6 @@ h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line
 .diff-item h3 { font-size: 17px; font-weight: 700; color: var(--c1); margin-bottom: 8px; }
 .diff-item p { font-size: 16px; color: var(--c2); line-height: 1.8; }
 
-/* PERSONA */
-.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
-.persona-card { border: 1px solid var(--border); padding: 36px; transition: background 0.2s; }
-.persona-card:hover { background: var(--ivory-2); }
-.persona-type { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c3); margin-bottom: 16px; }
-.persona-name { font-size: 22px; font-weight: 700; color: var(--c1); margin-bottom: 6px; }
-.persona-meta { font-size: 15px; color: var(--c3); margin-bottom: 24px; }
-.persona-section-label { font-size: 14px; font-weight: 700; color: var(--c1); margin-bottom: 8px; margin-top: 20px; }
-.persona-card p { font-size: 15px; color: var(--c2); line-height: 1.8; }
-
 .target-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
 .tag { padding: 6px 16px; border: 1px solid var(--border); font-size: 14px; color: var(--c2); }
 .tag.active { border-color: var(--c1); color: var(--c1); font-weight: 700; }
@@ -142,8 +133,8 @@ h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line
 .mvp-list { display: flex; flex-direction: column; border: 1px solid var(--border); margin-top: 16px; }
 .mvp-item { padding: 32px 36px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 64px 1fr; gap: 20px; align-items: start; }
 .mvp-item:last-child { border-bottom: none; }
-.mvp-num { font-size: 18px; font-weight: 700; color: var(--ivory-3); line-height: 1; padding-top: 3px; }
-.mvp-num.highlight { color: var(--c1); font-size: 15px; letter-spacing: 0.05em; }
+.mvp-num { font-size: 22px; font-weight: 700; color: var(--ivory-3); line-height: 1; padding-top: 3px; }
+.mvp-num.highlight { font-size: 15px; font-weight: 700; color: var(--c1); letter-spacing: 0.05em; padding-top: 4px; }
 .mvp-body h3 { font-size: 17px; font-weight: 700; color: var(--c1); margin-bottom: 8px; }
 .mvp-body p { font-size: 16px; color: var(--c2); line-height: 1.8; }
 
@@ -155,7 +146,6 @@ h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line
 @media (max-width: 900px) {
   .sidebar { display: none; }
   .main { margin-left: 0; width: 100%; padding: 0 24px; }
-  .persona-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -173,9 +163,8 @@ h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line
     <a href="#idea"><span class="nav-num">03</span>아이디어</a>
     <a href="#competition"><span class="nav-num">04</span>경쟁 분석</a>
     <a href="#diff"><span class="nav-num">05</span>차별화 포인트</a>
-    <a href="#persona"><span class="nav-num">06</span>페르소나</a>
-    <a href="#target"><span class="nav-num">07</span>타겟 & 로드맵</a>
-    <a href="#retro"><span class="nav-num">08</span>회고</a>
+    <a href="#target"><span class="nav-num">06</span>타겟 & 로드맵</a>
+    <a href="#retro"><span class="nav-num">07</span>회고</a>
   </nav>
   <div class="sidebar-footer">정제용 연구원<br>롱블랙 기반 분석</div>
 </aside>
@@ -304,34 +293,8 @@ h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line
     </div>
   </section>
 
-  <section id="persona">
-    <div class="section-num reveal">06</div>
-    <div class="section-eyebrow reveal">Persona</div>
-    <h2 class="reveal">페르소나</h2>
-    <div class="persona-grid reveal">
-      <div class="persona-card">
-        <div class="persona-type">Persona A · 정보 탐색형</div>
-        <div class="persona-name">정지수 (26세)</div>
-        <div class="persona-meta">사회초년생 · 마케터</div>
-        <div class="persona-section-label">상황</div>
-        <p>인스타그램에서 정부 혜택 정보를 능동적으로 찾아보는 편입니다. 해당 여부를 직접 확인하고 메모하거나 기억해뒀다가 신청하는 스타일입니다.</p>
-        <div class="persona-section-label">페인포인트</div>
-        <p>정보가 여러 계정에 흩어져 있어 메모하거나 기억해둬야 하고 내가 해당되는지 조건을 일일이 찾아봐야 하는 귀찮음이 있습니다. 신청 시기를 놓칠까봐 계속 확인해야 하는 것도 불편합니다.</p>
-      </div>
-      <div class="persona-card">
-        <div class="persona-type">Persona B · 정보 의존형</div>
-        <div class="persona-name">김현수 (27세)</div>
-        <div class="persona-meta">사회초년생 · 직장인</div>
-        <div class="persona-section-label">상황</div>
-        <p>혜택이 있다는 건 주변 지인을 통해 많이 듣고 물어보는 스타일입니다. "청년월세지원 언제야? 자격 요건이 뭐야? 나 안 돼?" 같은 질문을 반복합니다.</p>
-        <div class="persona-section-label">페인포인트</div>
-        <p>직접 찾아보기도 하지만 중간중간 놓친 설명글이 있어서 "아 이런 조건이 있었구나 나랑 안 맞는 거였네" 하는 상황이 반복됩니다. 조건을 충족하려면 어떻게 해야 하는지도 잘 모릅니다.</p>
-      </div>
-    </div>
-  </section>
-
   <section id="target">
-    <div class="section-num reveal">07</div>
+    <div class="section-num reveal">06</div>
     <div class="section-eyebrow reveal">Target & Roadmap</div>
     <h2 class="reveal">타겟 & MVP 로드맵</h2>
 
@@ -371,7 +334,7 @@ h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; color: var(--c1); line
   </section>
 
   <section id="retro">
-    <div class="section-num reveal">08</div>
+    <div class="section-num reveal">07</div>
     <div class="section-eyebrow reveal">Retrospect</div>
     <h2 class="reveal">회고</h2>
     <blockquote class="retro-quote reveal">"비즈니스 아이디어의 시작점은 거창한 기술이 아니라<br>주변에 관심을 갖고 불편함을 발견해내는 관찰에 있다."</blockquote>
